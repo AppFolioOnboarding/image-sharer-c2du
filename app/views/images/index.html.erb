@@ -3,3 +3,12 @@
 <h1>Images</h1>
 
 <%= link_to 'New Image', new_image_path %>
+
+<% @images.each do |image| %>
+  <p>
+    <strong>Url:</strong>
+    <%= image.url %>
+    <br>
+    <%= image_tag image.url, :class => 'max_image' %>
+  </p>
+<% end %>

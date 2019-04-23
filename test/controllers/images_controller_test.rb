@@ -33,4 +33,20 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     assert_response :ok
     assert_select 'img[src="http://www.fake.com/1.jpg"]'
   end
+
+  test 'add new img should show on homepage' do
+    Image.create!(url: 'http://www.fake.com/2.jpg')
+    get root_path
+    assert_select 'img[src="http://www.fake.com/2.jpg"]'
+  end
+
+  test 'newest img appears first' do
+    Image.create!(url: 'http://www.fake.com/1.jpg')
+    Image.create!(url: 'http://www.fake.com/2.jpg')
+    get root_path
+    assert_select 'img' do |images|
+      assert_equal images[0].attr('src'), 'http://www.fake.com/2.jpg'
+      assert_equal images[1].attr('src'), 'http://www.fake.com/1.jpg'
+    end
+  end
 end
