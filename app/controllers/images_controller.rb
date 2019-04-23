@@ -17,7 +17,9 @@ class ImagesController < ApplicationController
     end
   end
 
-  def index; end
+  def index
+    @images = Image.all.order(created_at: :desc)
+  end
 
   private
 

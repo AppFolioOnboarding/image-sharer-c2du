@@ -4,7 +4,7 @@
   <strong>Url:</strong>
   <%= @image.url %>
   <br>
-  <%= image_tag @image.url %>
+  <%= image_tag @image.url, :class => 'max_image' %>
 </p>
 
 <%= link_to 'Back', images_path %>
