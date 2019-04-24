@@ -74,4 +74,12 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
       assert_equal images[0].attr('src'), 'http://www.fake.com/2.jpg'
     end
   end
+
+  test 'home button should render index page' do
+    get root_path
+    assert_select 'a:first', 'Home'
+    assert_select 'a:first' do |link|
+      assert_equal link.attr('href').value, '/'
+    end
+  end
 end
