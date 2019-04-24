@@ -43,8 +43,8 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     Image.create!(url: 'http://www.fake.com/2.jpg', tag_list: 'pig, dog')
     get root_path
     assert_select 'img[src="http://www.fake.com/2.jpg"]'
-    assert_select 'span.js-tag', 'pig'
-    assert_select 'span.js-tag', 'dog'
+    assert_select 'span a', 'pig'
+    assert_select 'span a', 'dog'
   end
 
   test 'newest img appears first' do
@@ -54,6 +54,32 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     assert_select 'img' do |images|
       assert_equal images[0].attr('src'), 'http://www.fake.com/2.jpg'
       assert_equal images[1].attr('src'), 'http://www.fake.com/1.jpg'
+    end
+  end
+
+  test 'should return nothing when tag does not exist' do
+    Image.create!(url: 'http://www.fake.com/1.jpg', tag_list: 'dog')
+    Image.create!(url: 'http://www.fake.com/2.jpg', tag_list: 'pig, dog')
+    get root_path(tag: 'donut')
+    assert_select 'img', false
+  end
+
+  test 'should return images tagged when tag exists' do
+    Image.create!(url: 'http://www.fake.com/1.jpg', tag_list: 'dog')
+    Image.create!(url: 'http://www.fake.com/2.jpg', tag_list: 'pig, dog')
+    get root_path(tag: 'pig')
+    assert_select 'span a', 'pig'
+    assert_select 'img' do |images|
+      assert_equal images.length, 1
+      assert_equal images[0].attr('src'), 'http://www.fake.com/2.jpg'
+    end
+  end
+
+  test 'home button should render index page' do
+    get root_path
+    assert_select 'a:first', 'Home'
+    assert_select 'a:first' do |link|
+      assert_equal link.attr('href').value, '/'
     end
   end
 end
