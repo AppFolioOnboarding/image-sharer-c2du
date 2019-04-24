@@ -82,4 +82,11 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
       assert_equal link.attr('href').value, '/'
     end
   end
+
+  test 'delete button should remove image' do
+    image1 = Image.create!(url: 'http://www.fake.com/1.jpg', tag_list: 'dog')
+    Image.create!(url: 'http://www.fake.com/2.jpg', tag_list: 'pig, dog')
+    delete image_path(image1)
+    assert_redirected_to images_path
+  end
 end
