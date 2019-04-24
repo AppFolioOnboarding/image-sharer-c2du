@@ -10,5 +10,12 @@
     <%= image.url %>
     <br>
     <%= image_tag image.url, :class => 'max_image' %>
+    <br>
+    <h6>Tags:</h6>
+    <% image.tag_list.each do |tag| %>
+      <%#= link_to tag, tagged_path(tag: tag) %>
+      <%= tag %>
+      <br>
+    <% end %>
   </p>
 <% end %>

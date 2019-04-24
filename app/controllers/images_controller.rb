@@ -21,9 +21,14 @@ class ImagesController < ApplicationController
     @images = Image.all.order(created_at: :desc)
   end
 
+  # def tagged
+  #   @images = params[:tag].present? ? Image.tagged_with(params[:tag]) : Image.all.order(created_at: :desc)
+  #   redirect_to index
+  # end
+
   private
 
   def image_params
-    params.require(:image).permit(:url)
+    params.require(:image).permit(:url, :tag_list)
   end
 end
