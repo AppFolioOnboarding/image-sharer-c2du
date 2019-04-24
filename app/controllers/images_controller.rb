@@ -27,8 +27,14 @@ class ImagesController < ApplicationController
   end
 
   def destroy
-    @image = Image.find(params[:id]).destroy!
-    redirect_to images_path, notice: 'Image was successfully deleted.'
+    @image = Image.find_by(id: params[:id])
+    if @image.present?
+      @image.destroy!
+      msg = 'Image was successfully deleted.'
+    else
+      msg = 'Image not found.'
+    end
+    redirect_to images_path, notice: msg
   end
 
   private

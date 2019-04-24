@@ -89,4 +89,22 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     delete image_path(image1)
     assert_redirected_to images_path
   end
+
+  test 'delete button should remove img and render notice msg on index page' do
+    image1 = Image.create!(url: 'http://www.fake.com/1.jpg', tag_list: 'dog')
+    Image.create!(url: 'http://www.fake.com/2.jpg', tag_list: 'pig, dog')
+    delete image_path(image1)
+    assert_redirected_to images_path
+    get images_path
+    assert_select 'p#notice', 'Image was successfully deleted.'
+  end
+
+  test 'delete button should not remove nonexistent img and render correct notice msg on index page' do
+    Image.create!(url: 'http://www.fake.com/1.jpg', tag_list: 'dog')
+    Image.create!(url: 'http://www.fake.com/2.jpg', tag_list: 'pig, dog')
+    delete image_path(1000)
+    assert_redirected_to images_path
+    get images_path
+    assert_select 'p#notice', 'Image not found.'
+  end
 end
