@@ -21,4 +21,9 @@ class ImageTest < ActiveSupport::TestCase
     assert_not_predicate image, :valid?
     assert_includes image.errors[:url], 'not a jpg image link'
   end
+
+  test 'valid case with tags' do
+    image = Image.new(url: 'http://www.fake.com/1.jpg', tag_list: 'pig, dog')
+    assert_predicate image, :valid?
+  end
 end
