@@ -10,34 +10,41 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     get new_image_path
     assert_response :ok
     assert_select 'h1', 'New Image'
-    assert_select 'input'
+    assert_select 'input[name="image[url]"]'
+    assert_select 'input[name="image[tag_list]"]'
   end
 
   test 'should create valid' do
     assert_difference 'Image.count', 1 do
-      post images_path, params: { image: { url: 'https://pbs.twimg.com/media/CVEWaK5UwAAUYOC.jpg' } }
+      post images_path, params: { image: { url: 'https://pbs.twimg.com/media/CVEWaK5UwAAUYOC.jpg',
+                                           tag_list: 'happy, sad' } }
     end
+    assert_equal Image.last.tag_list, %w[happy sad]
     assert_redirected_to image_path(Image.last)
   end
 
   test 'should create invalid' do
-    assert_no_difference 'Image.count' do
+    assert_no_difference -> { Image.count } do
       post images_path, params: { image: { url: 'asdasdf' } }
     end
     assert_response :unprocessable_entity
   end
 
-  test 'should get show' do
-    image = Image.create!(url: 'http://www.fake.com/1.jpg')
+  test 'should get show with tags' do
+    image = Image.create!(url: 'http://www.fake.com/1.jpg', tag_list: 'pig, dog')
     get image_path(image)
     assert_response :ok
     assert_select 'img[src="http://www.fake.com/1.jpg"]'
+    assert_select 'span.js-tag', 'pig'
+    assert_select 'span.js-tag', 'dog'
   end
 
   test 'add new img should show on homepage' do
-    Image.create!(url: 'http://www.fake.com/2.jpg')
+    Image.create!(url: 'http://www.fake.com/2.jpg', tag_list: 'pig, dog')
     get root_path
     assert_select 'img[src="http://www.fake.com/2.jpg"]'
+    assert_select 'span.js-tag', 'pig'
+    assert_select 'span.js-tag', 'dog'
   end
 
   test 'newest img appears first' do
