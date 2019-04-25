@@ -26,6 +26,17 @@ class ImagesController < ApplicationController
     @images = @images.order(created_at: :desc)
   end
 
+  def destroy
+    @image = Image.find_by(id: params[:id])
+    if @image.present?
+      @image.destroy!
+      msg = 'Image was successfully deleted.'
+    else
+      msg = 'Image not found.'
+    end
+    redirect_to images_path, notice: msg
+  end
+
   private
 
   def image_params
