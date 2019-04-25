@@ -85,14 +85,21 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
 
   test 'delete button should remove image' do
     image1 = Image.create!(url: 'http://www.fake.com/1.jpg', tag_list: 'dog')
-    Image.create!(url: 'http://www.fake.com/2.jpg', tag_list: 'pig, dog')
-    delete image_path(image1)
+    assert_difference 'Image.count', -1 do
+      delete image_path(image1)
+    end
+    assert_redirected_to images_path
+  end
+
+  test 'delete button should not remove nonexistent image' do
+    assert_no_difference 'Image.count' do
+      delete image_path(1000)
+    end
     assert_redirected_to images_path
   end
 
   test 'delete button should remove img and render notice msg on index page' do
     image1 = Image.create!(url: 'http://www.fake.com/1.jpg', tag_list: 'dog')
-    Image.create!(url: 'http://www.fake.com/2.jpg', tag_list: 'pig, dog')
     delete image_path(image1)
     assert_redirected_to images_path
     get images_path
@@ -100,8 +107,6 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'delete button should not remove nonexistent img and render correct notice msg on index page' do
-    Image.create!(url: 'http://www.fake.com/1.jpg', tag_list: 'dog')
-    Image.create!(url: 'http://www.fake.com/2.jpg', tag_list: 'pig, dog')
     delete image_path(1000)
     assert_redirected_to images_path
     get images_path
