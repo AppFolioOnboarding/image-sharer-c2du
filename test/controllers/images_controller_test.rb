@@ -6,6 +6,12 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     assert_select 'h1', 'Images'
   end
 
+  test 'feedback link should show up in index' do
+    get root_path
+    assert_response :ok
+    assert_select 'a[href=?]', new_feedback_path
+  end
+
   test 'should get new' do
     get new_image_path
     assert_response :ok

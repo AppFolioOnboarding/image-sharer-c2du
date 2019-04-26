@@ -1,5 +1,6 @@
 <p id="notice"><%= notice %></p>
 <%= link_to 'Home', root_path %>
+<%= link_to 'Feedback', new_feedback_path %>
 <br>
 <p>All tags: </p>
 <% ActsAsTaggableOn::Tag.all.each do |tag| %>
