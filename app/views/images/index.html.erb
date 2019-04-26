@@ -4,7 +4,7 @@
 <br>
 <p>All tags: </p>
 <% ActsAsTaggableOn::Tag.all.each do |tag| %>
-  <span><%= link_to tag, root_path(tag: tag) %></span>
+  <span><%= link_to tag, root_path(tag: tag.name), class: 'js-alltag' %></span>
 <% end %>
 <h1>Images</h1>
 <%= link_to 'New Image', new_image_path %>

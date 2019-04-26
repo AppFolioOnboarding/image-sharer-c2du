@@ -118,4 +118,10 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     get images_path
     assert_select 'p#notice', 'Image not found.'
   end
+
+  test 'tag link should pass name' do
+    Image.create!(url: 'http://www.fake.com/1.jpg', tag_list: 'dog')
+    get root_path
+    assert_select 'a.js-alltag[href=?]', '/?tag=dog'
+  end
 end
