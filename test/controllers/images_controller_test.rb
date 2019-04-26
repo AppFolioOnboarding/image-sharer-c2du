@@ -6,6 +6,12 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     assert_select 'h1', 'Images'
   end
 
+  test 'feedback link should show up in index' do
+    get root_path
+    assert_response :ok
+    assert_select 'a[href=?]', new_feedback_path
+  end
+
   test 'should get new' do
     get new_image_path
     assert_response :ok
@@ -111,5 +117,11 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to images_path
     get images_path
     assert_select 'p#notice', 'Image not found.'
+  end
+
+  test 'tag link should pass name' do
+    Image.create!(url: 'http://www.fake.com/1.jpg', tag_list: 'dog')
+    get root_path
+    assert_select 'a.js-alltag[href=?]', '/?tag=dog'
   end
 end
