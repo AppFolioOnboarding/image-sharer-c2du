@@ -1,11 +1,12 @@
 <p id="notice"><%= notice %></p>
-<%= link_to 'Home', root_path %>
+<%= link_to 'Home', root_path %> |
 <%= link_to 'Feedback', new_feedback_path %>
 <br>
 <p>All tags: </p>
 <% ActsAsTaggableOn::Tag.all.each do |tag| %>
   <span><%= link_to tag, root_path(tag: tag.name), class: 'js-alltag' %></span>
 <% end %>
+<br>
 <h1>Images</h1>
 <%= link_to 'New Image', new_image_path %>
 
@@ -14,8 +15,9 @@
     <strong>Url:</strong>
     <%= image.url %>
     <br>
-    <%= image_tag image.url, :class => 'max_image' %>
-    <%= link_to 'delete', image_path(image.id), data: { method: :delete, confirm: "Are you sure?" } %>
+    <%= image_tag image.url, class: 'max_image' %>
+    <br>
+    <%= link_to 'delete', image_path(image), data: { method: :delete, confirm: "Are you sure?" } %>
     <p><h2>Tags:</h2>
       <% image.tag_list.each do |tag| %>
         <span><%= link_to tag, root_path(tag: tag) %></span>
