@@ -1,4 +1,4 @@
-# rubocop:disable Metrics/MethodLength, Rails/CreateTableWithTimestamps
+# rubocop:disable Rails/CreateTableWithTimestamps
 # This migration comes from acts_as_taggable_on_engine (originally 1)
 if ActiveRecord.gem_version >= Gem::Version.new('5.0')
   class ActsAsTaggableOnMigration < ActiveRecord::Migration[4.2]; end
@@ -35,4 +35,4 @@ ActsAsTaggableOnMigration.class_eval do
     drop_table :tags
   end
 end
-# rubocop:enable Metrics/MethodLength, Rails/CreateTableWithTimestamps
+# rubocop:enable Rails/CreateTableWithTimestamps

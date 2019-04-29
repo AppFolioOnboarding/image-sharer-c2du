@@ -1,6 +1,9 @@
 {
   "parser": "babel-eslint",
   "extends": "appfolio-react",
+  "rules": {
+    "max-len": [2, 140]
+  },
   "parserOptions": {
     "ecmaFeatures": {
       "legacyDecorators": true
